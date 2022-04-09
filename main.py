@@ -6,7 +6,13 @@ def calculate (digit_A, digit_B, op_type):
     if op_type == "*" :
         return digit_A * digit_B
     if op_type == "/":
-        return digit_A / digit_B
+        if digit_B == 0:
+            print("На ноль делить нельзя")
+        else:
+            return digit_A / digit_B
+
+
 
 
 print(calculate(93, 4, '*'))
+print(calculate(93, 0, '/'))
