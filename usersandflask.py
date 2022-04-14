@@ -37,7 +37,7 @@ def home_page():
 def get_all_users():
     response = ''
     for user in ALL_USERS:
-        response += f'<a href="/article/{user["id"]}"><h1>{user["name"]}</h1></a><p>{user["description"]}</p>'
+        response += f'<a href="/user/{user["id"]}"><h1>{user["name"]}</h1></a><p>{user["description"]}</p>'
     return response
 
 @app.route('/user/<int:id>')
