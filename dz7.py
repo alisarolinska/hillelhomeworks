@@ -1,7 +1,7 @@
 import flask
-from flask import request
+from flask import Flask, request
 
-app = flask.Flask(__name__)
+app = Flask(__name__)
 users = [
     {
         'id': 1,
@@ -37,11 +37,6 @@ users = [
 ]
 
 
-@app.route('/')
-def index():
-	return 'OK!'
-
-
 @app.route('/users')
 def get_users():
 	return flask.jsonify(users)
@@ -49,25 +44,41 @@ def get_users():
 
 @app.route('/user', methods=['POST'])
 def create_user():
+	data = request.json
+	if 'name' in data and 'last name' in data and 'password' in data and 'email' in data:
+		email = data['email']
+		if len(list(filter(lambda x: x['email'] == email, users))) != 0:
+			return flask.jsonify({
+					'code': 2,
+					'message': 'Пользователь уже есть в системе'
+			})
+		users.append(data)
+		return flask.jsonify({
+			'code': 0,
+			'message': 'Пользователь создан'
+		})
+	return flask.jsonify({
+			'code': 1,
+			'message': 'У пользователя есть обязательные поля: username, password, email'
+	})
+
+
+@app.route('/user/<int:user_id>', methods=['GET', 'DELETE'])
+def get_user():
+	return flask.jsonify(users)
+def delete_user(user_id: int):
 	global users
-	user_data = request.json
-	user_data['id'] = len(users) + 1
-	users.append(user_data)
-	return flask.jsonify(user_data)
+	if len(users) >= user_id:
+		users.pop(user_id - 1)
+		return flask.jsonify({
+			'code': 0,
+			'message': 'Пользователь удален!'
+		})
+	return flask.jsonify({
+			'code': 3,
+			'message': 'Пользователь не найден!'
+		})
 
 
-@app.route('/task/<int:task_id>', methods=['GET', 'DELETE'])
-def get_user(user_id):
-	global users
-	filtered_users = list(filter(lambda x: x['id'] == user_id, users))
-	if len(filtered_users) == 0:
-		return {'message': 'Пользователь не найден!'}, 404
-	if request.method == 'GET':
-		return flask.jsonify(filtered_users[0])
-	elif request.method == 'DELETE':
-		users = list(filter(lambda x: x['id'] != user_id, users))
-		return {'message': 'Пользователь удален!'}
-
-
-if __name__ == '__dz7__':
+if __name__ == '__main__':
 	app.run(debug=True)
