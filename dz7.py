@@ -63,9 +63,12 @@ def create_user():
 	})
 
 
-@app.route('/user/<int:user_id>', methods=['GET', 'DELETE'])
+@app.route('/user/<int:user_id>', methods=['GET'])
 def get_user():
 	return flask.jsonify(users)
+
+
+@app.route('/user/<int:user_id>', methods=['DELETE'])
 def delete_user(user_id: int):
 	global users
 	if len(users) >= user_id:
