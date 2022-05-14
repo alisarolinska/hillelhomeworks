@@ -14,5 +14,5 @@ def calculate (digit_A, digit_B, op_type):
 
 
 
-print(calculate(93, 4, '*'))
+print(calculate(15.48, 50, '*'))
 print(calculate(93, 0, '/'))
