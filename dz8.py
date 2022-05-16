@@ -78,7 +78,7 @@ def delete_task(task_id: int):
 @app.route('/task', methods=['POST'])
 def create_task():
         data = request.json
-        if 'id' in data and 'name' in data and 'description' in data and 'deadline' in data and 'creation date' in data:
+        if 'id' in data and 'name' in data and 'description' in data and 'deadline' in data:
             name = data['name']
             if len(list(filter(lambda x: x['name'] == name, tasks))) != 0:
                 return flask.jsonify({
@@ -92,7 +92,7 @@ def create_task():
             })
         return flask.jsonify({
             'code': 1,
-            'message': 'У задания есть обязательные поля: название, описание, выполнить до, дата создания'
+            'message': 'У задания есть обязательные поля: название, описание, выполнить до'
         })
 
 @app.route('/user/<int:user_id>', methods=['PUT'])
