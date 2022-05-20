@@ -62,5 +62,6 @@ def get_article(id):
 	return flask.jsonify({
 			'code': 0,
 			'message': 'OK',
-			'data': article_crud.delete_one(id)
+			'data': article_crud.delete(id)
 		})
+
