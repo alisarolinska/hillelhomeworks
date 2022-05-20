@@ -65,5 +65,3 @@ def delete_article(id):
 			'data': article_crud.delete(id)
 		})
 
-
-
