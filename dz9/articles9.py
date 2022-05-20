@@ -58,7 +58,7 @@ def update_article(id):
 
 
 @article_api.delete(config.API_ROUTE_PREFIX + 'articles/<id>')
-def get_article(id):
+def delete_article(id):
 	return flask.jsonify({
 			'code': 0,
 			'message': 'OK',
