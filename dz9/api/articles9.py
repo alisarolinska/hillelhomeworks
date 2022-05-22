@@ -4,6 +4,7 @@ from datetime import datetime
 
 from core import config
 from crud.articles import article_crud
+from schemas.articles import Article
 
 article_api = flask.Blueprint('article_api', __name__)
 
@@ -44,24 +45,31 @@ def create_article():
 
 @article_api.put(config.API_ROUTE_PREFIX + 'articles/<id>')
 def update_article(id):
-	if 'title' not in request.json or 'content' not in request.json or 'author' not in request.json:
+	try:
+		article = Article(id=str(id), title=request.json.get('title'), content=request.json.get('content'), author=request.json.get('author'))
+	except ValidationError as e:
+		return e.json()
+	data = article_crud.update(article.dict(), id)
+	if data is None:
 		return flask.jsonify({
 				'code': 9,
-				'message': 'Title, content, author являются обязательными полями',
+				'message': 'Статья не найдена',
 				'data': None
 			})
 	return flask.jsonify({
-		'code': 0,
-		'message': 'OK',
-		'data': article_crud.update(id)
-	})
-
-
-@article_api.delete(config.API_ROUTE_PREFIX + 'articles/<id>')
-def delete_article(id):
-	return flask.jsonify({
 			'code': 0,
 			'message': 'OK',
-			'data': article_crud.delete(id)
+			'data': None
 		})
+
+
+@article_api.delete(config.API_ROUTE_PREFIX + 'article/<id>')
+def delete_article(id):
+	return flask.jsonify(
+		{
+			'code': 0,
+			'message': 'delete article',
+			'data': article_crud.delete(id)
+		}
+	)
 
