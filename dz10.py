@@ -34,8 +34,8 @@ def delete_article(id):
 	cursor.execute(f'delete from articles where id = {id}')
 	connection.commit()
 
-def update_article(id):
-	cursor.execute(f'Update articles set title = "new title" where id = {id}')
+def update_article(id, title, text):
+	cursor.execute(f'Update articles set title = {title}, text = {text} where id = {id}')
 	connection.commit()
 
 def get_article(title, text):
